@@ -16,7 +16,7 @@ def get_examples(word):
     base_url = "http://cn.bing.com/dict/search"
     query_string = urllib.parse.urlencode({ "q": word })
 
-    response = requests.get(base_url + "?" + word)
+    response = requests.get(base_url + "?" + query_string)
     dom = html.fromstring(response.content)
 
     dom_sentences = dom.xpath('//*[@class="se_li"]')
@@ -33,7 +33,7 @@ def get_examples(word):
 
 
 
-examples = get_examples("%E5%8F%96%E6%B6%88")
+examples = get_examples("上班")
 print("Retrieved {0} examples".format(len(examples)))
 
  
