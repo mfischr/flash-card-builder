@@ -1,0 +1,7 @@
+{
+    "__comment": "Pointer to plain-text UTF8-encoded CC-CEDICT. Can be downloaded at http://cc-cedict.org/wiki/",
+    "cedict_path": "~\\Documents\\Mandarin\\cedict_ts.u8",
+
+    "__comment:": "Regex for paths to local HSK word lists.  Should be downloaded from http://www.hskhsk.com/word-lists.html",
+    "hsk_word_list_path": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L(\\d+) freqorder.txt"
+}
