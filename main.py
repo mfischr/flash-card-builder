@@ -1,7 +1,8 @@
-import requests
-import json
 import sys
 import os
+import json
+import requests
+import ankiutils
 from ccedict import Ccedict
 
 # class Sentence():
@@ -14,7 +15,8 @@ from ccedict import Ccedict
 def loadConfig(argv):
     # Should've passed the name of a text file in which to count words
     if (len(argv) == 2):
-        with open(sys.argv[1], "r") as configFile:
+        real_path = os.path.expanduser(argv[1])
+        with open(real_path, "r") as configFile:
             config = json.load(configFile)
             config['cedict_path'] = os.path.expanduser(config['cedict_path'])
 
@@ -57,7 +59,14 @@ if __name__ == "__main__":
 
     print("Loaded cedict, {0} words".format(len(dict.words.keys())))
 
+    # Create a fake card
+    word_key = list(dict.words.keys())[100]
+    word = dict.words[word_key]
 
+    cards = [{"id": "5", "front": word['hanzi'], "back": word['definition'] }]
+    file_name = ankiutils.write_deck_for_import("test", cards)
+
+    print("Wrote cards to {0}".format(file_name))
 
 # with open("sentences.json", "w") as out_file:
 #     json.dump(examples, out_file)

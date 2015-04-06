@@ -13,11 +13,12 @@ class Ccedict():
         pinyin_start = line.find("[")
         pinyin_end = line.find("]", pinyin_start)
         def_index = line.find("/", pinyin_end)
+        def_last_index = line.rfind("/")  # Remove any trailing characters
 
         return {
                 "hanzi": line[trad_end:pinyin_start].strip(),
                 "pinyin": line[pinyin_start:pinyin_end + 1],
-                "def": line[def_index:]
+                "definition": line[def_index:def_last_index + 1]
                }
 
 
