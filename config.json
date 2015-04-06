@@ -3,5 +3,10 @@
     "cedict_path": "~\\Documents\\Mandarin\\cedict_ts.u8",
 
     "__comment:": "Regex for paths to local HSK word lists.  Should be downloaded from http://www.hskhsk.com/word-lists.html",
-    "hsk_word_list_path": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L(\\d+) freqorder.txt"
+    "hsk_word_list_path": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L(\\d+) freqorder.txt",
+
+    "__comment": "Folder where caches of HTML sentence documents should be stored",
+    "setence_cache_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\SentenceCache",
+
+    "temp_word_list": "阻止;森林;霍;等于"
 }
