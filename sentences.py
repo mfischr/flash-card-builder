@@ -59,7 +59,7 @@ class SentenceDownloader:
             return response_as_text
 
         else:
-            logging.info("Loading cached content from '%s'", cache_file)
+            logging.debug("Loading cached content from '%s'", cache_file)
 
             with codecs.open(cache_file, 'r', 'utf-8') as file:
                 return file.read()
@@ -75,7 +75,7 @@ class SentenceDownloader:
 
         dom_sentences = dom.xpath('//*[@class="se_li"]')
 
-        logging.debug("  get_sentences: [%s] parsing %d sentences", word, len(dom_sentences))
+        logging.debug("  get_sentences: [xx] parsing %d sentences", len(dom_sentences))
 
         sentences = []
 

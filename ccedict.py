@@ -1,6 +1,7 @@
 __author__ = 'Michael'
 
 import codecs
+import logging
 
 class Ccedict():
 
@@ -32,4 +33,6 @@ class Ccedict():
 
                 if (not word is None):
                     self.words[word["hanzi"]] = word
+
+            logging.info("Loaded cedict ({0} words)".format(len(self.words.keys())))
 
