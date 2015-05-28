@@ -1,36 +1,66 @@
 # Formats example sentence cards for Anki
 #
-# Rather than using Anki to do all the complicated substitution, we do it
-# here because it's easier to write and debug.
-#
-# Fields of a card are as follows:
-#   unique_name: something unique to identify the card. Hanzi is fine for now
-#   hanzi_simplified: simplified hanzi
-#   hanzi_traditional: traditional hanzi
-#   pinyin: raw pinyin straight from CCEDICT
-#   definition: raw definition text straight from CCEDICT.
-#
-#   produce_front: front of the card for producing the hanzi, given the
-#     definition and example sentences.
-#   produce_back: back of the card for producing the hanzi
-#   recognize_front: front of the card for recognizing the hanzi
-#   recognize_back: back of the card
+# Try to do as little formatting here as possible, since the editor
+# in Anki is actually really good.  Here we only do all the reformatting
+# and editing that is a pain to do in JS.
 
-
-_CARD_TEMPLATES = {
-    '1-unique_name': "{word[hanzi]}",
-    '2-hanzi_simplified': "{word[hanzi]}",
-    '3-pinyin': "{word[pinyin]}",
-
-    '4-produce_front': "{sentences[4][english]} / {sentences[4][chinese]}"
+_TONE_COLOR_FORMAT = {
+    '1': "<span class=\"tone1\">{0}</span>",
+    '2': "<span class=\"tone2\">{0}</span>",
+    '3': "<span class=\"tone3\">{0}</span>",
+    '4': "<span class=\"tone4\">{0}</span>",
+    '5': "<span class=\"tone5\">{0}</span>",
 }
 
 def format_card(word, sentences):
     """Returns a list of the fields to write to the card"""
+    import json
 
     fields = []
 
-    for key in sorted(_CARD_TEMPLATES.keys()):
-        fields.append(_CARD_TEMPLATES[key].format(word = word, sentences = sentences))
+    # 1. Unique Name (for now, just the hanzi)
+    fields.append(word['hanzi'])
+
+    # 2. Hanzi
+    fields.append(word['hanzi'])
+
+    # 3. Hanzi colorized based on tone color
+    fields.append(_tone_color(word['hanzi'], word['pinyin'], _TONE_COLOR_FORMAT))
+
+    # 4. Pinyin
+    fields.append(word['pinyin'])
+
+    # 5. Definitions as HTML
+    # Filter out the definitions that start with "CL: "
+    defs = "<br />".join(word['definition'][1:-1].split("/"))
+    fields.append(defs)
+
+    # 6. Sentences as json
+    sentences_json = json.dumps(sentences)
+    fields.append(sentences_json)
+
+    # 7. Sentences as json, with the words clozed out
+    # TODO: figure out how to properly clone this object
+    sentences_clozed = json.loads(sentences_json)
+
+    for sentence in sentences_clozed:
+        cloze_text = "<span class=\"clozetext\">" + ("##" * len(word['hanzi'])) + "</span>"
+        sentence['chinese'] = sentence['chinese'].replace(word['hanzi'], cloze_text)
+
+    fields.append(json.dumps(sentences_clozed))
 
     return fields
+
+# Just takes the last characters from each pinyin syllable
+def _extract_tones_from_pinyin(pinyin):
+    pinyin_list = pinyin[1:-1].split(" ")
+    return list(x[-1:] for x in pinyin_list)
+
+def _tone_color(hanzi, pinyin, tone_to_format_dict):
+    tones = _extract_tones_from_pinyin(pinyin)
+
+    output = ""
+    for i in range(len(hanzi)):
+        output += tone_to_format_dict[tones[i]].format(hanzi[i])
+
+    return output

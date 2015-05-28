@@ -46,6 +46,7 @@ def _init_logger(config):
     for h in handlers:
         h.setFormatter(formatter)
         h.setLevel(logging.DEBUG)
+
         root_logger.addHandler(h)
 
     logging.info("Started logging")
@@ -73,3 +74,5 @@ if __name__ == "__main__":
         cards.append(cardformat.format_card(word, sentences))
 
     file_name = ankiutils.write_deck_for_import("test", cards)
+
+    logging.info("Wrote cards to '{0}'".format(file_name))
