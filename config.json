@@ -6,7 +6,7 @@
     "cedict_file": "~\\Documents\\Mandarin\\cedict_ts.u8",
 
     "__comment:": "Regex for paths to local HSK word lists.  Should be downloaded from http://www.hskhsk.com/word-lists.html",
-    "hsk_word_list_file": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L(\\d+) freqorder.txt",
+    "hsk_word_list_file": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L{0} freqorder.txt",
 
     "__comment": "Folder where caches of HTML sentence documents should be stored",
     "sentence_cache_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\SentenceCache",

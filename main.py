@@ -38,7 +38,7 @@ def _init_logger(config):
         datefmt = "%Y-%m-%d %H:%M:%S")
     handlers = [
         logging.handlers.RotatingFileHandler(config['log_file'], encoding = 'utf-8',
-            maxBytes = 100000, backupCount = 1),
+            maxBytes = 1000000, backupCount = 1),
         logging.StreamHandler()
     ]
     root_logger = logging.getLogger()
@@ -52,6 +52,13 @@ def _init_logger(config):
     logging.info("Started logging")
 
 
+def words_from_hsk(path_pattern, hsk_level) -> list:
+    wordList = []
+    with codecs.open(os.path.expanduser(path_pattern.format(hsk_level)), "r", "utf-8") as words:
+        for line in list(words):
+            word = line.split("\t")[0]
+            wordList.append(word)
+    return wordList
 
 
 
@@ -60,19 +67,29 @@ if __name__ == "__main__":
     config = _load_config(sys.argv)
     _init_logger(config)
 
-    dict = Ccedict(config['cedict_file'])
+    dictionary = Ccedict(config['cedict_file'])
 
-    # Create a fake card
-    words = config['temp_word_list'].split(";")
+    words = words_from_hsk(config['hsk_word_list_file'], 4)
+    logging.info("Loaded HSK list ({0} words)".format(len(words)))
+
     sent = SentenceDownloader(config['sentence_cache_folder'])
+
 
     cards = []
 
+    cardCount = 0
+
     for w in words:
+        if cardCount > 30:
+            break
+
+        cardCount += 1
+
         sentences = sent.get_sentences(w)
-        word = dict.words[w]
-        cards.append(cardformat.format_card(word, sentences))
+        if w in dictionary.words:
+            word = dictionary.words[w]
+            cards.append(cardformat.format_card(word, sentences))
+        else:
+            logging.warning("Dictionary doesn't have word {0}".format(w))
 
     file_name = ankiutils.write_deck_for_import("test", cards)
-
-    logging.info("Wrote cards to '{0}'".format(file_name))
