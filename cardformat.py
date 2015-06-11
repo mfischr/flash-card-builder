@@ -36,16 +36,12 @@ def format_card(word, sentences):
     nonClDefs = ((x if not re.search("^CL:", x) else None) for x in word['definition'])
     fields.append(json.dumps(list(nonClDefs)))
 
-    # 6. Sentences as json
-    sentences_json = json.dumps(sentences)
-    fields.append(sentences_json)
-
-    # 7. Sentences as json, with the words clozed out
+    # 6. Sentences as json, with the words clozed out
     # TODO: figure out how to properly clone this object
-    sentences_clozed = json.loads(sentences_json)
+    sentences_clozed = json.loads(json.dumps(sentences))
 
     for sentence in sentences_clozed:
-        cloze_text = "<span class=\"clozetext\">" + ("##" * len(word['hanzi'])) + "</span>"
+        cloze_text = "<span class=\"cloze-hidden\">" + ("##" * len(word['hanzi'])) + "</span><span class=\"cloze-visible\">" + word['hanzi'] + "</span>"
         sentence['chinese'] = sentence['chinese'].replace(word['hanzi'], cloze_text)
 
     fields.append(json.dumps(sentences_clozed))
