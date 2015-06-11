@@ -11,5 +11,5 @@
     "__comment": "Folder where caches of HTML sentence documents should be stored",
     "sentence_cache_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\SentenceCache",
 
-    "temp_word_list": "阻止;森林;霍;等于"
+    "exclusion_list": "与[yu2];与[yu4]"
 }

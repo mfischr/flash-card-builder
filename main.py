@@ -21,6 +21,7 @@ def _load_config(argv):
             config['cedict_file'] = os.path.expanduser(config['cedict_file'])
             config['log_file'] = os.path.expanduser(config['log_file'])
             config['sentence_cache_folder'] = os.path.expanduser(config['sentence_cache_folder'])
+            config['exclusion_list'] = config['exclusion_list'].split(";")
 
             logging.basicConfig(filename = config['log_file'], level = logging.DEBUG)
             logging.info("Loaded config file from %s", config['log_file'])
@@ -60,6 +61,9 @@ def words_from_hsk(path_pattern, hsk_level) -> list:
             wordList.append(word)
     return wordList
 
+def _is_excluded(word) -> bool:
+    return word['id'] in config['exclusion_list']
+
 
 
 if __name__ == "__main__":
@@ -78,18 +82,25 @@ if __name__ == "__main__":
     cards = []
 
     cardCount = 0
+    excludedCount = 0
 
     for w in words:
-        if cardCount > 30:
+        if cardCount > 60:
             break
 
         cardCount += 1
 
-        sentences = sent.get_sentences(w)
         if w in dictionary.words:
             word = dictionary.words[w]
-            cards.append(cardformat.format_card(word, sentences))
+            if not _is_excluded(word):
+                sentences = sent.get_sentences(w)
+                cards.append(cardformat.format_card(word, sentences))
+            else:
+                excludedCount += 1
+
         else:
             logging.warning("Dictionary doesn't have word {0}".format(w))
 
     file_name = ankiutils.write_deck_for_import("test", cards)
+
+    logging.info("Excluded {0} cards".format(excludedCount))

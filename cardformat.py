@@ -15,11 +15,12 @@ _TONE_COLOR_FORMAT = {
 def format_card(word, sentences):
     """Returns a list of the fields to write to the card"""
     import json
+    import re
 
     fields = []
 
-    # 1. Unique Name (for now, just the hanzi)
-    fields.append(word['hanzi'])
+    # 1. Unique Name (hanzi plus pinyin)
+    fields.append(word['id'])
 
     # 2. Hanzi
     fields.append(word['hanzi'])
@@ -30,10 +31,10 @@ def format_card(word, sentences):
     # 4. Pinyin
     fields.append(word['pinyin'])
 
-    # 5. Definitions as HTML
+    # 5. Definitions as JSON
     # Filter out the definitions that start with "CL: "
-    defs = "<br />".join(word['definition'][1:-1].split("/"))
-    fields.append(defs)
+    nonClDefs = ((x if not re.search("^CL:", x) else None) for x in word['definition'])
+    fields.append(json.dumps(list(nonClDefs)))
 
     # 6. Sentences as json
     sentences_json = json.dumps(sentences)
@@ -53,7 +54,7 @@ def format_card(word, sentences):
 
 # Just takes the last characters from each pinyin syllable
 def _extract_tones_from_pinyin(pinyin):
-    pinyin_list = pinyin[1:-1].split(" ")
+    pinyin_list = pinyin.split(" ")
     return list(x[-1:] for x in pinyin_list)
 
 def _tone_color(hanzi, pinyin, tone_to_format_dict):
