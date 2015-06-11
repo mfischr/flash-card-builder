@@ -1,3 +1,5 @@
+import pinyinutils
+
 # Formats example sentence cards for Anki
 #
 # Try to do as little formatting here as possible, since the editor
@@ -28,8 +30,8 @@ def format_card(word, sentences):
     # 3. Hanzi colorized based on tone color
     fields.append(_tone_color(word['hanzi'], word['pinyin'], _TONE_COLOR_FORMAT))
 
-    # 4. Pinyin
-    fields.append(word['pinyin'])
+    # 4. Pinyin, accented
+    fields.append(pinyinutils.multiple_text_from_pinyin(word['pinyin']))
 
     # 5. Definitions as JSON
     # Filter out the definitions that start with "CL: "

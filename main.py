@@ -85,7 +85,7 @@ if __name__ == "__main__":
     excludedCount = 0
 
     for w in words:
-        if cardCount > 60:
+        if cardCount > 120:
             break
 
         cardCount += 1
