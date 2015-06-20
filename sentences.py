@@ -27,8 +27,10 @@ class SentenceDownloader:
         :return:
         """
 
+        # TODO: urllib.parse.urlencode seems to order its parameters however it feels like it,
+        # TODO: which messes with the caching logic. So, yeah
         query_string = urllib.parse.urlencode({ "q": word })
-        url = SentenceDownloader._BING_SENTENCES_BASE_URL + "?" + query_string
+        url = SentenceDownloader._BING_SENTENCES_BASE_URL + "?" + query_string + "&mkt=zh-CN"
 
         cache_file = os.path.join(self.sentence_cache_folder, osutils.make_valid_filename(url) + ".txt")
 
