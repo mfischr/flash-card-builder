@@ -7,20 +7,7 @@ import json
 import codecs
 import requests
 import urllib.parse
-
-def _ensure_dir(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-def _clear_dir(path):
-    if os.path.exists(path):
-        shutil.rmtree(path)
-
-def _make_valid_filename(str):
-    """
-    From http://stackoverflow.com/questions/295135/turn-a-string-into-a-valid-filename-in-python
-    """
-    return "".join((x if x.isalnum() else "_") for x in str)
+import osutils
 
 
 class SentenceDownloader:
@@ -29,7 +16,7 @@ class SentenceDownloader:
     def __init__(self, sentence_cache_folder):
         self.sentence_cache_folder = sentence_cache_folder
         self.download_count = 0
-        _ensure_dir(self.sentence_cache_folder)
+        osutils.ensure_dir(self.sentence_cache_folder)
 
 
     def _download_bing_sentences(self, word):
@@ -43,7 +30,7 @@ class SentenceDownloader:
         query_string = urllib.parse.urlencode({ "q": word })
         url = SentenceDownloader._BING_SENTENCES_BASE_URL + "?" + query_string
 
-        cache_file = os.path.join(self.sentence_cache_folder, _make_valid_filename(url) + ".txt")
+        cache_file = os.path.join(self.sentence_cache_folder, osutils.make_valid_filename(url) + ".txt")
 
         if not os.path.exists(cache_file):
             logging.info("Requesting content from '%s'", url)
@@ -89,7 +76,7 @@ class UnitTests(unittest.TestCase):
     _TEMP_SENTENCE_CACHE_FOLDER = os.path.expandvars("$Temp\\sentences_py_unittest_cache")
 
     def setUp(self):
-        _clear_dir(UnitTests._TEMP_SENTENCE_CACHE_FOLDER)
+        osutils.clear_dir(UnitTests._TEMP_SENTENCE_CACHE_FOLDER)
 
     def tearDown(self):
         pass

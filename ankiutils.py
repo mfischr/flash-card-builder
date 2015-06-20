@@ -1,15 +1,17 @@
 import os.path
 import codecs
 import logging
+import osutils
 
 def _remove_newlines(s):
     return s.replace("\n", "\\n").replace("\r", "\\r")
 
-def write_deck_for_import(file_tag, cards):
+def write_deck_for_import(folder, file_tag, cards):
     """Writes out the cards for import into Anki.  The file used for import is a temporary file.
     Cards is a list of lists which have the properties to write to the cards.
     """
-    file_name = os.path.expandvars("$Temp\\cards-{0}.txt".format(file_tag))
+    osutils.ensure_dir(folder)
+    file_name = os.path.join(folder, "cards-{0}.txt".format(file_tag))
 
     with codecs.open(file_name, "w", "utf-8") as file:
         file.write("\t".join(['Z'] * len(cards[0])))  # Add a dummy card to ensure the delimiter is detected correctly

@@ -35,8 +35,6 @@ def multiple_text_from_pinyin(text):
 
         pinyinGroup = matches.group(1)
 
-        print(pinyinGroup)
-
         if matches.group(2):
             pinyinGroup += matches.group(2)
 
@@ -50,7 +48,7 @@ def multiple_text_from_pinyin(text):
 def _text_from_pinyin(numberPinyin):
     """Given "you3", returns "you", and so forth."""
 
-    m = re.search("^([a-z]{1,6})(\d)?$", numberPinyin.strip())
+    m = re.search("^([a-z:]{1,6})(\d)?$", numberPinyin.strip())
     if not m:
         # Maybe this is already accented pinyin?
         return numberPinyin
@@ -60,7 +58,9 @@ def _text_from_pinyin(numberPinyin):
         else:
             tone = 5
 
-        rawPinyin = m.group(1).replace("v", "ü")   # v->ü: Common shorthand
+        rawPinyin = m.group(1)
+        rawPinyin = rawPinyin.replace("v", "ü")   # v->ü: Common shorthand
+        rawPinyin = rawPinyin.replace("u:", "ü")   # u:->ü: CCEDICT style
 
         if rawPinyin.find("iu") > 0:
             pinyin = rawPinyin.replace("u", _get_tone_character("u", tone))
@@ -98,3 +98,4 @@ class UnitTests(unittest.TestCase):
         self.assertEqual("fú", multiple_text_from_pinyin("fu2"), "2")
         self.assertEqual("wángfújǐng", multiple_text_from_pinyin("wang2fu2jing3"), "3")
         self.assertEqual("lǜ yě", multiple_text_from_pinyin("lv4 ye3"), "4")
+        self.assertEqual("lǚ xíng", multiple_text_from_pinyin("lu:3 xing2"), "5")

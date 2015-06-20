@@ -8,8 +8,14 @@
     "__comment:": "Regex for paths to local HSK word lists.  Should be downloaded from http://www.hskhsk.com/word-lists.html",
     "hsk_word_list_file": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L{0} freqorder.txt",
 
+    "__comment": "Filename of file with extra words that are inserted out-of-band into the review set.",
+    "extra_words_file": "~\\Documents\\Mandarin\\FlashCardBuilder\\Extra Words.txt",
+
     "__comment": "Folder where caches of HTML sentence documents should be stored",
     "sentence_cache_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\SentenceCache",
+
+    "__comment": "Folder where card list should be exported for import into Anki",
+	"anki_import_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\CardImport",    
 
     "exclusion_list": "与[yu2];与[yu4]"
 }
