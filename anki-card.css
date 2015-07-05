@@ -1,0 +1,67 @@
+.card {
+ font-family: arial;
+ font-size: 20px;
+ text-align: center;
+ color: black;
+ background-color: white;
+}
+
+.sentence_chinese {
+ font-family: simsun;
+ font-size: 25px;
+ text-align: left;
+}
+
+.sentence_english {
+ font: arial;
+ font-size: 13px;
+ color: rgb(180, 180, 180);
+ text-align: left;
+}
+
+.definitions {
+ text-align: left;
+ font-size: 15px;
+ font-style: italic;
+ color: rgb(128, 128, 128);
+}
+
+.big-hanzi {
+ font-size: 72px;
+ font-family: KaiTi;
+}
+
+.pinyin {
+}
+
+/* style of the marks that represent the clozed text */
+.cloze-hidden
+{
+ color: rgb(192, 0, 20);
+ font-weight: bold;
+}
+
+.cloze-hidden-hide
+{
+ color: rgb(192, 0, 20);
+ font-weight: bold;
+ display: none;
+}
+
+.cloze-visible
+{
+ font-weight: bold;
+}
+
+.cloze-visible-hide
+{
+ font-weight: bold;
+ display: none;
+}
+
+/* tone colors */
+.tone1 { color: rgb(212, 0, 0); }
+.tone2 { color: rgb(0, 212, 0); }
+.tone3 { color: rgb(0, 0, 232); }
+.tone4 { color: rgb(128, 0, 198); }
+.tone5 { color: rgb(108, 108, 108); }

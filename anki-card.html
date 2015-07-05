@@ -1,0 +1,71 @@
+<span class="big-hanzi">{{HanziSimplifiedToneColored}}</span><br />
+<span class="pinyin">{{Pinyin}}</span>
+
+<br />
+<br />
+
+<div id="definitions" class="definitions"></div>
+
+<br />
+
+<div id="first_example"></div>
+
+<div id="other_examples" style="display: none;"></div>
+<a id="more_link" href="javascript:more('more_link', 'other_examples');" style="display:none;">more</a>
+
+<script language="javascript">
+var isHidden = false;  // Change this to true/false to change presentation of cloze sentences
+
+function add_example_sentence(elementId, sentence)
+{
+  var exs = document.getElementById(elementId);
+  var chinese = sentence.chinese;
+  var english = sentence.english;
+  if (isHidden)
+  {
+    chinese = chinese.replace('class="cloze-visible"', 'class="cloze-visible-hide"');
+  } else {
+    chinese = chinese.replace('class="cloze-hidden"', 'class="cloze-hidden-hide"');
+  }
+  exs.innerHTML += '<div class="sentence_chinese">' + chinese + '</div><div class="sentence_english">' + english + '</div><br />';
+}
+
+function more(moreId, elementId)
+{
+  document.getElementById(elementId).style.display = "block";
+  document.getElementById(moreId).style.display = "none";
+}
+
+defs_json = {{Definition}}
+document.getElementById("definitions").innerHTML = defs_json.join("; ")
+document.getElementById("more_link").style.display = (isHidden ? "none" : "inline");
+
+cloze_json = {{SentencesClozedJson}}
+
+var minutes_per_sentence = 1440
+var sentences_since_epoch = Math.round( (new Date() / 1000 - (11 * 3600)) / (minutes_per_sentence * 60));
+sentence_to_show = sentences_since_epoch % cloze_json.length
+
+add_example_sentence("first_example", cloze_json[sentence_to_show]);
+
+var all_sentences = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
+all_sentences.remove(sentence_to_show);
+
+for (var i = 0; i < all_sentences.length; i++)
+{
+  add_example_sentence("other_examples", cloze_json[all_sentences[i]]);
+}
+
+
+document.getElementsByClassName("big-hanzi")[0].style.visibility = (isHidden ? "hidden" : "visible");
+document.getElementsByClassName("pinyin")[0].style.visibility = (isHidden ? "hidden" : "visible");
+
+</script>
