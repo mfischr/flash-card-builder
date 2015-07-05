@@ -57,7 +57,6 @@ def _init_logger(config):
         logging.handlers.RotatingFileHandler(config['log_file'], encoding = 'utf-8',
             maxBytes = 1000000, backupCount = 1),
         logging.StreamHandler()
-        #logging.FileHandler(config['log_file'], encoding = 'utf-8'),
     ]
     root_logger = logging.getLogger()
     root_logger.handlers = []   # Default root logger contains a FileHandler that writes with cp1252 codec. Screw that.
@@ -82,19 +81,60 @@ def _words_from_hsk(path_pattern, hsk_level) -> list:
 
     return wordList
 
+"""
+def _extra_words_split_line(line):
+        Returns simplified character, pinyin, and definitions in a set
+        if (line.startswith("#")):
+            return None
 
-def _words_from_text(filename) -> list:
+        m = re.search("^\s*\w")
+m = re.search("^([a-z:]{1,6})(\d)?$", numberPinyin.strip())
+    if not m:
+        # Maybe this is already accented pinyin?
+        return numberPinyin
+    else:
+        if m.group(2):
+            tone = int(m.group(2))
+        else:
+            tone = 5
+
+        rawPinyin = m.group(1)
+        rawPinyin = rawPinyin.replace("v", "ü")   # v->ü: Common shorthand
+        rawPinyin = rawPinyin.replace("u:", "ü")   # u:->ü: CCEDICT style
+
+
+        "^\s"
+        hanzi_end = line.find(" ")
+        pinyin_start = line.find("[")
+        pinyin_end = line.find("]", pinyin_start)
+        def_index = line.find("/", pinyin_end)
+        def_last_index = line.rfind("/")  # Remove any trailing characters
+
+        hanzi = line[trad_end:pinyin_start].strip()
+        pinyin = line[pinyin_start + 1:pinyin_end]
+
+        return {
+                'id': "{0}[{1}]".format(hanzi, pinyin),
+                'hanzi': hanzi,
+                'pinyin': pinyin,
+                'definition': line[def_index:def_last_index + 1][1:-1].split("/")
+               }
+"""
+
+def _words_from_text(filename) -> (list, dict):
     """
     Loads a list of words from a text file.
     """
     wordList = []
+    dict_extra = {}
+
     with codecs.open(filename, 'r', 'utf-8') as words:
         for line in list(words):
             word = line.strip()
             if len(word) > 0:
                 wordList.append(word)
 
-    return wordList
+    return (wordList, dict_extra)
 
 def _merge_and_remove_duplicate_words(words_hsk, words_extra) -> list:
     # During the duplicate check, make a copy to preserve the original order
@@ -147,14 +187,14 @@ if __name__ == "__main__":
 
     dictionary = Ccedict(config['cedict_file'])
 
-    words_extra = _words_from_text(config['extra_words_file'])
+    (words_extra, dict_extra) = _words_from_text(config['extra_words_file'])
     words_hsk = _words_from_hsk(config['hsk_word_list_file'], 4)
 
     logging.info("Loaded extra word list ({0} words)".format(len(words_extra)))
     logging.info("Loaded HSK list ({0} words)".format(len(words_hsk)))
 
     # temporary so I'm not inundated with new cards
-    words_hsk = words_hsk[0:360]
+    words_hsk = words_hsk[0:460]
 
     words_all = _merge_and_remove_duplicate_words(words_hsk, words_extra)
 
