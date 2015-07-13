@@ -5,7 +5,7 @@ import logging
 import json
 import ankiutils
 from ccedict import Ccedict
-from sentences import SentenceDownloader
+from sentences import SentenceDownloader, CachedDownloader
 import cardformat
 
 
@@ -168,7 +168,7 @@ def _assemble_card_info(words, dictionary, sentence_downloader) -> list:
         if w in dictionary.words:
             word = dictionary.words[w]
             if not _is_in_exclusion_list(word):
-                sentences = sentence_downloader.get_sentences(w)
+                sentences = sentence_downloader.get_sentences_iciba(w)
                 card_info.append({'word': word, 'sentences': sentences})
             else:
                 excluded_count += 1
@@ -199,7 +199,11 @@ if __name__ == "__main__":
     words_all = _merge_and_remove_duplicate_words(words_hsk, words_extra)
 
     # Load the stuff
-    card_info = _assemble_card_info(words_all, dictionary, SentenceDownloader(config['sentence_cache_folder']))
+    card_info = _assemble_card_info(
+        words_all,
+        dictionary,
+        SentenceDownloader(
+            CachedDownloader(config['sentence_cache_folder'])))
 
     cards = [cardformat.format_card(x['word'], x['sentences']) for x in card_info]
 
