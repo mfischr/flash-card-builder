@@ -10,7 +10,7 @@ For more detail, see the below section **What is this, really?**
 0. Install packages. You'll need `requests` and `lxml` (on Windows, get lxml from [this precompiled wheel site](http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml))
 1. Download CC-CEDICT (URL is in config.json). Update the path in config.json.
 2. Create a file with the list of words you want, one per line. Save it as UTF-8 and update the path in config.json.
-3. Run the program. It will take a while, as it's downloading definition pages for hundreds of words and parsing out the example sentences.
+3. Run the program. It will take a while, as it's downloading definition pages for your words and parsing out the example sentences.
 4. When it's done, you'll have cards-all.txt, which is tab-delimited and can be imported directly into Anki.
 5. In Anki, import `Example Deck.apkg` as a new deck. This gives you two cards per word: one for recognizing the word, and one for producing it given a sentence (honestly, I've shied away from using the Produce card in my own learning; see below)
 6. Whenever you add cards, just open the deck and import (Ctrl+I), using \t as the delimiter, and allowing HTML in fields.
