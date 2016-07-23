@@ -1,3 +1,4 @@
+import os
 import os.path
 import codecs
 import logging
@@ -10,7 +11,7 @@ def write_deck_for_import(folder, file_tag, cards):
     """Writes out the cards for import into Anki.  The file used for import is a temporary file.
     Cards is a list of lists which have the properties to write to the cards.
     """
-    osutils.ensure_dir(folder)
+    os.makedirs(folder, exist_ok=True)
     file_name = os.path.join(folder, "cards-{0}.txt".format(file_tag))
 
     with codecs.open(file_name, "w", "utf-8") as file:

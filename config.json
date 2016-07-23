@@ -1,6 +1,6 @@
 {
     "__comment": "Path to log file.",
-    "log_file": "~\\Documents\\Mandarin\\FlashCardBuilder\\log.log",
+    "log_file": "~\\Documents\\Scratch\\Logs\\flash-card-builder.log",
     
     "__comment": "Pointer to plain-text UTF8-encoded CC-CEDICT. Can be downloaded at http://cc-cedict.org/wiki/",
     "cedict_file": "~\\Documents\\Mandarin\\cedict_ts.u8",
@@ -9,13 +9,13 @@
     "hsk_word_list_file": "~\\Documents\\Mandarin\\HSK Official With Definitions 2012 L{0} freqorder.txt",
 
     "__comment": "Filename of file with extra words that are inserted out-of-band into the review set.",
-    "extra_words_file": "~\\Documents\\Mandarin\\FlashCardBuilder\\Extra Words.txt",
+    "extra_words_file": "~\\Documents\\Mandarin\\Anki\\Yuedu.txt",
 
     "__comment": "Folder where caches of HTML sentence documents should be stored",
     "sentence_cache_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\SentenceCache",
 
     "__comment": "Folder where card list should be exported for import into Anki",
-	"anki_import_folder": "~\\Documents\\Mandarin\\FlashCardBuilder\\CardImport",    
+	"anki_import_folder": "~\\Documents\\Scratch\\AnkiImport\\Yuedu",
 
     "exclusion_list": "与[yu2];与[yu4]"
 }

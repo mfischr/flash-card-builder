@@ -43,12 +43,15 @@ def format_card(word, sentences):
     # TODO: figure out how to properly clone this object
     sentences_clozed = json.loads(json.dumps(sentences))
 
+    valid_sentences = []
     for sentence in sentences_clozed:
-        cloze_text = "<span class=\"cloze-hidden\">" + ("##" * len(word['hanzi'])) + "</span><span class=\"cloze-visible\">" + word['hanzi'] + "</span>"
-        if sentence['chinese'].find(word['hanzi']) == -1:
-            logging.warning("Couldn't find word {0} in one of its example sentences".format(word['hanzi']))
+        cloze_text = "<span class=\"cloze-blank\">" + ("##" * len(word['hanzi'])) + "</span><span class=\"cloze-text\">" + word['hanzi'] + "</span>"
+        if sentence['chinese'].find(word['hanzi']) >= 0:
+            sentence['chinese'] = sentence['chinese'].replace(word['hanzi'], cloze_text)
+            valid_sentences.append(sentence)
 
-        sentence['chinese'] = sentence['chinese'].replace(word['hanzi'], cloze_text)
+    if (len(valid_sentences) < 2):
+        logging.warning("Word {0} only has {1} example sentence(s)".format(word['hanzi'], len(valid_sentences)))
 
     fields.append(json.dumps(sentences_clozed))
 
